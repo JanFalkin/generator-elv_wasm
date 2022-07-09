@@ -2,7 +2,7 @@
   "name": "generator-elv_wasm",
   "version": "1.0.0",
   "description": "project generator for an eluvio content fabric bitcode module",
-  "main": "index.js",
+  "main": "generators/app/index.js",
   "keywords": [
     "yeoman-generator"
   ],
@@ -10,8 +10,11 @@
     "generators"
   ],
   "dependencies": {
-    "yeoman-generator": "^1.1.1",
-    "yo": "^4.3.0"
+    "chalk": "^1.0.0",
+    "slug": "^0.8.0",
+    "yeoman-generator": "^2.0.0",
+    "yo": "^4.3.0",
+    "yosay": "^1.0.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
