@@ -1,0 +1,21 @@
+{
+  "name": "generator-elv_wasm",
+  "version": "1.0.0",
+  "description": "project generator for an eluvio content fabric bitcode module",
+  "main": "index.js",
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "files": [
+    "generators"
+  ],
+  "dependencies": {
+    "yeoman-generator": "^1.1.1",
+    "yo": "^4.3.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jan Falkin",
+  "license": "ISC"
+}
