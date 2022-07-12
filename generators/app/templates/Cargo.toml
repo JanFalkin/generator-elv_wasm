@@ -16,3 +16,6 @@ crate-type = ["rlib", "cdylib"]
 elvwasm = {git = "https://github.com/eluv-io/elv_wasm", branch = "main"}
 wapc = "0.10.1"
 wapc-guest = "0.4.0"
+serde = "*"
+serde_json = "*"
+serde_derive = "*"

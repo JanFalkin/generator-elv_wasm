@@ -85,7 +85,6 @@ module.exports = class extends Generator {
    }
 
     writing(){
-      this.log(this.answers);
       this.fs.copyTpl(
         this.templatePath('Cargo.toml'),
         this.destinationPath('Cargo.toml'),
@@ -127,9 +126,7 @@ module.exports = class extends Generator {
       )
 
     }
-    // install() {
-    //   this.npmInstall();
-    // }
+
     end() {
       this.log(chalk.green('------------'))
       this.log(chalk.magenta('***---***'))
