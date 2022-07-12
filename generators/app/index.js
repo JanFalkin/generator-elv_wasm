@@ -25,246 +25,120 @@ module.exports = class extends Generator {
     // Next, add your custom code
     //this.option('babel'); // This method adds support for a `--babel` flag
   }
-  method1() {
-    this.log('method 1 just ran');
-  }
 
-  method2() {
-    this.log('method 2 just ran');
-  }
-
-  prompting(){
+  async prompting(){
       this.log(yosay('Create your own ' + chalk.red('Eluvio') + ' content fabric bitcode library!'));
+      this.answers = await this.prompt([{
+        type: 'input',
+        name: 'name',
+        message: 'Your project name',
+        default: this.appname, // appname return the default folder name to project
+        store: true,
+      },
+      {
+        type: 'input',
+        name: 'email',
+        message: 'Your email for contact',
+        default: "someuser@somewhere", // appname return the default folder name to project
+        store: true,
+      },
+      {
+        type: 'input',
+        name: 'license',
+        message: 'License type',
+        default: "MIT", // appname return the default folder name to project
+        store: true,
+      },
+      {
+        type: 'input',
+        name: 'repoUrl',
+        message: 'repo url',
+        default: "https://www.github.com/myrepo", // appname return the default folder name to project
+        store: true,
+      },
+      {
+        type: 'checkbox',
+        name: 'language',
+        message: 'What source language would you like to create?',
+        choices: [
+          { name: 'Rust Language',
+            value: {
+              name: 'Rust',
+              slugname: 'eluvio_rust',
+              description: 'A Rust wasm library',
+              build: 'To buildthe bitcode wasm, run:\n```$ cargo build --target wasm32-unknown-unknown --release```',
+              test: 'To run Cargo tests, run:\n```$ cargo test```'
+            },
+            checked: true },
+          { name: 'AssemblyScript Language',
+            value: {
+              name: 'AssemblyScript',
+              slugname: 'eluvio_asm',
+              description: 'An AssemblyScript wasm library',
+              build: 'To buildthe bitcode wasm, run:\n```$npm i```',
+              test: 'To run Cargo tests, run:\n```$ npm test```'
+            },
+            checked: false },
+        ]
+      }
+    ]);
    }
 
-  askForBindings() {
-      var done = this.async();
+    writing(){
+      this.log(this.answers);
+      this.fs.copyTpl(
+        this.templatePath('Cargo.toml'),
+        this.destinationPath('Cargo.toml'),
+        {
+          slugname: this.answers.language[0].slugname,
+          author: this.answers.name,
+          email: this.answers.email,
+          license: this.answers.license,
+          repoUrl : this.answers.repoUrl,
+          description: this.answers.language[0].description
+        }
 
-      var prompts = [
-        { type: 'checkbox',
-          name: 'language',
-          message: 'What source language would you like to create?',
-          choices: [
-            { name: 'Rust Language',
-              value: {
-                name: 'Rust',
-                slugname: 'rs',
-                description: 'A Rust wasm library',
-                build: 'To buildthe bitcode wasm, run:\n```$ cargo build --target wasm32-unknown-unknown --release```',
-                test: 'To run Cargo tests, run:\n```$ cargo test```'
-              },
-              checked: true },
-            { name: 'AssemblyScript Language',
-              value: {
-                name: 'AssemblyScript',
-                slugname: 'as',
-                description: 'An AssemblyScript wasm library',
-                build: 'To buildthe bitcode wasm, run:\n```$npm i```',
-                test: 'To run Cargo tests, run:\n```$ npm test```'
-              },
-              checked: false },
-          ] }
-      ];
+      )
+      this.fs.copyTpl(
+        this.templatePath('src/lib.rs'),
+        this.destinationPath('src/lib.rs'),
+        {
+          slugname: this.answers.language[0].slugname,
+          author: this.answers.name,
+          email: this.answers.email,
+          license: this.answers.license,
+          repoUrl : this.answers.repoUrl,
+          description: this.answers.language[0].description
+        }
 
-      this.prompt(prompts, function(props) {
-        var bindings = {};
-        props.bindings.forEach(function(binding) {
-          bindings[binding.slugname] = binding;
-        });
-        this.bindings = bindings;
+      )
+      this.fs.copyTpl(
+        this.templatePath('tests/lib.rs'),
+        this.destinationPath('tests/lib.rs'),
+        {
+          slugname: this.answers.language[0].slugname,
+          author: this.answers.name,
+          email: this.answers.email,
+          license: this.answers.license,
+          repoUrl : this.answers.repoUrl,
+          description: this.answers.language[0].description
+        }
 
-        done();
-      }.bind(this));
-
-      done = this.async();
-      var prompts = [
-        { name: 'name',
-          message: 'Module name',
-          default: extractGeneratorName(this.appname) },
-        { name: 'description',
-          message: 'Description',
-          default: 'A Rust library with bindings!' },
-        { name: 'keywords',
-          message: 'Key your keywords (comma to split)',
-          default: '' },
-        { name: 'license',
-          message: 'License',
-          default: 'MIT' }
-      ];
-      this.prompt(prompts, function (props) {
-        this.name = props.name;
-        this.slugname = slug(this.name);
-        this.description = props.description;
-        this.keywords = props.keywords;
-        this.license = props.license;
-        this.keywords = this.keywords.split(',').map(function(el) {
-          return el.trim();
-        }).filter(function(el) {
-          return !!el;
-        });
-        done();
-      }.bind(this));
-
-//      rustFiles = function() {
-          this.template('Cargo.toml');
-          this.copy('src/lib.rs');
-          this.template('tests/lib.rs');
-//      }
-
+      )
 
     }
-
+    // install() {
+    //   this.npmInstall();
+    // }
+    end() {
+      this.log(chalk.green('------------'))
+      this.log(chalk.magenta('***---***'))
+      this.log(chalk.blue('Jobs is Done!'))
+      this.log(chalk.green('------------'))
+      this.log(chalk.magenta('***---***'))
+    }
 
 };
 
 
-// module.exports =  class extends Generator {
-//   initializing() {
-//     this.pkg = require('../package.json');
-//   }
 
-  // prompting(){
-  //   greet = function() {
-  //     this.log(yosay('Create your own ' + chalk.red('Eluvio') + ' content fabric bitcode library!'));
-  //   }
-  // }
-
-  // askForBindings() {
-  //     var done = this.async();
-
-  //     var prompts = [
-  //       { type: 'checkbox',
-  //         name: 'language',
-  //         message: 'What source language would you like to create?',
-  //         choices: [
-  //           { name: 'Rust Language',
-  //             value: {
-  //               name: 'Rust',
-  //               slugname: 'rs',
-  //               description: 'A Rust wasm library',
-  //               build: 'To buildthe bitcode wasm, run:\n```$ cargo build --target wasm32-unknown-unknown --release```',
-  //               test: 'To run Cargo tests, run:\n```$ cargo test```'
-  //             },
-  //             checked: true },
-  //           { name: 'AssemblyScript Language',
-  //             value: {
-  //               name: 'AssemblyScript',
-  //               slugname: 'as',
-  //               description: 'An AssemblyScript wasm library',
-  //               build: 'To buildthe bitcode wasm, run:\n```$npm i```',
-  //               test: 'To run Cargo tests, run:\n```$ npm test```'
-  //             },
-  //             checked: false },
-  //         ] }
-  //     ];
-
-  //     this.prompt(prompts, function(props) {
-  //       var bindings = {};
-  //       props.bindings.forEach(function(binding) {
-  //         bindings[binding.slugname] = binding;
-  //       });
-  //       this.bindings = bindings;
-
-  //       done();
-  //     }.bind(this));
-  //   }
-
-  //   // askForGitHubUser: function () {
-  //   //   var done = this.async();
-
-  //   //   var prompts = [{
-  //   //     name: 'githubUser',
-  //   //     message: 'Would you mind telling me your username on GitHub?',
-  //   //     default: 'someuser'
-  //   //   }];
-
-  //   //   this.prompt(prompts, function (props) {
-  //   //     this.githubUser = props.githubUser;
-
-  //   //     done();
-  //   //   }.bind(this));
-  //   // },
-
-  //   askForProjectProps() {
-  //     var done = this.async();
-
-  //     var prompts = [
-  //       { name: 'name',
-  //         message: 'Module name',
-  //         default: extractGeneratorName(this.appname) },
-  //       { name: 'description',
-  //         message: 'Description',
-  //         default: 'A Rust library with bindings!' },
-  //       { name: 'keywords',
-  //         message: 'Key your keywords (comma to split)',
-  //         default: '' },
-  //       { name: 'license',
-  //         message: 'License',
-  //         default: 'MIT' }
-  //     ];
-  //     this.prompt(prompts, function (props) {
-  //       this.name = props.name;
-  //       this.slugname = slug(this.name);
-  //       this.description = props.description;
-  //       this.keywords = props.keywords;
-  //       this.license = props.license;
-
-  //       done();
-  //     }.bind(this));
-  //   }
-
-  // configuring() {
-  //   // userInfo: function () {
-  //   //   var done = this.async();
-
-  //   //   githubUserInfo(this.githubUser, function (res) {
-  //   //     /*jshint camelcase:false */
-  //   //     this.author = res.name;
-  //   //     this.email = res.email;
-  //   //     this.githubUrl = res.html_url;
-  //   //     this.repoUrl = this.githubUrl + '/' + this.slugname;
-  //   //     done();
-  //   //   }.bind(this), this.log);
-  //   // },
-
-  //   keywords = function() {
-  //     this.keywords = this.keywords.split(',').map(function(el) {
-  //       return el.trim();
-  //     }).filter(function(el) {
-  //       return !!el;
-  //     });
-  //   }
-  // }
-
-  // writing() {
-  // //   jsFiles: function () {
-  // //     if (!this.bindings.js) { return; }
-  // //     this.template('package.json');
-  // //     this.copy('jshintrc', '.jshintrc');
-  // //     this.template('js/lib/index.js');
-  // //     this.template('js/tests/index.js');
-  // //   },
-
-  //   rustFiles= function() {
-  //     this.template('Cargo.toml');
-  //     this.copy('src/lib.rs');
-  //     this.template('tests/lib.rs');
-  //   },
-
-  //   projectFiles= function () {
-  //     this.copy('editorconfig', '.editorconfig');
-  //     this.copy('gitignore', '.gitignore');
-  //     this.copy('gitattributes', '.gitattributes');
-  //     this.template('README.md');
-  //   }
-  // }
-
-  // install() {
-  //   if (this.bindings.js) {
-  //     this.installDependencies({
-  //       skipInstall: this.options['skip-install'],
-  //       bower: false
-  //     });
-  //   }
-  // }
-//}
