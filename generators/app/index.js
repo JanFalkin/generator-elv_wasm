@@ -83,7 +83,6 @@ module.exports = class extends Generator {
    }
 
     writing(){
-      this.log(this.answers);
       var copyInfo = {
         slugname: this.answers.language.slugname,
         author: this.answers.name,
