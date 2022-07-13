@@ -85,46 +85,56 @@ module.exports = class extends Generator {
    }
 
     writing(){
-      this.fs.copyTpl(
-        this.templatePath('Cargo.toml'),
-        this.destinationPath('Cargo.toml'),
-        {
-          slugname: this.answers.language[0].slugname,
-          author: this.answers.name,
-          email: this.answers.email,
-          license: this.answers.license,
-          repoUrl : this.answers.repoUrl,
-          description: this.answers.language[0].description
-        }
+      var copyInfo = {
+        slugname: this.answers.language[0].slugname,
+        author: this.answers.name,
+        email: this.answers.email,
+        license: this.answers.license,
+        repoUrl : this.answers.repoUrl,
+        githubUrl : this.answers.repoUrl,
+        description: this.answers.language[0].description
+      };
+      if (this.answers.language[0].slugname == 'eluvio_rust'){
+        this.fs.copyTpl(
+          this.templatePath('Cargo.toml'),
+          this.destinationPath('Cargo.toml'),
+          copyInfo
 
-      )
-      this.fs.copyTpl(
-        this.templatePath('src/lib.rs'),
-        this.destinationPath('src/lib.rs'),
-        {
-          slugname: this.answers.language[0].slugname,
-          author: this.answers.name,
-          email: this.answers.email,
-          license: this.answers.license,
-          repoUrl : this.answers.repoUrl,
-          description: this.answers.language[0].description
-        }
+        )
+        this.fs.copyTpl(
+          this.templatePath('src/lib.rs'),
+          this.destinationPath('src/lib.rs'),
+          copyInfo
+        )
+        this.fs.copyTpl(
+          this.templatePath('tests/lib.rs'),
+          this.destinationPath('tests/lib.rs'),
+          copyInfo
+        )
+      }
+      if (this.answers.language[0].slugname == 'eluvio_asm'){
+        this.fs.copyTpl(
+          this.templatePath('package.json'),
+          this.destinationPath('package.json'),
+          copyInfo
 
-      )
-      this.fs.copyTpl(
-        this.templatePath('tests/lib.rs'),
-        this.destinationPath('tests/lib.rs'),
-        {
-          slugname: this.answers.language[0].slugname,
-          author: this.answers.name,
-          email: this.answers.email,
-          license: this.answers.license,
-          repoUrl : this.answers.repoUrl,
-          description: this.answers.language[0].description
-        }
-
-      )
-
+        )
+        this.fs.copyTpl(
+          this.templatePath('assembly'),
+          this.destinationPath('assembly'),
+          copyInfo
+        )
+        this.fs.copyTpl(
+          this.templatePath('include'),
+          this.destinationPath('include'),
+          copyInfo
+        )
+        this.fs.copyTpl(
+          this.templatePath('as/lib.ts'),
+          this.destinationPath('as/lib.ts'),
+          copyInfo
+        )
+      }
     }
 
     end() {

@@ -1,7 +1,7 @@
 {
   "name": "<%= slugname %>",
   "description": "<%= description %>",
-  "main": "js/lib/index.js",
+  "main": "as/lib.ts",
   "version": "0.0.1",
   "author": {
     "name": "<%= author %>",
@@ -13,21 +13,23 @@
     "url": "<%= repoUrl %>"
   },
   "license": "<%= license %>",
-  "keywords": [
-    "<%= slugname %>"<% for (var i = 0; i < keywords.length; i++) { %>,
-    "<%= keywords[i] %>"<% } %>
-  ],
   "scripts": {
-    "test": "npm i && ./node_modules/.bin/mocha -R spec js/tests/**/*.js",
-    "install": "cargo build --release --verbose"
+    "clean": "find . -name \"*.wa*\" -exec rm {} \\;",
+    "install": "npm install --save @assemblyscript/loader && npm install --save-dev assemblyscript && npm install --save assemblyscript-json",
+    "asbuild-lib:untouched": "asc as/lib --use abort= -b as/lib.wasm -t as/lib.wat",
+    "asbuild-lib:optimized": "asc as/lib --use abort= -b -O > as/lib-optimized.wasm",
+    "asbuild-unopt": "npm run asbuild-lib:untouched",
+    "asbuild-all": "npm run asbuild-lib:untouched && npm run asbuild-lib:optimized",
+    "asbuild-all-untouched": "npm run asbuild-lib:untouched",
+    "asbuild": "npm run asbuild-all-untouched"
   },
-  "dependencies": {
-    "ffi": "^1.2.7",
-    "ref": "^1.0.1",
-    "ref-struct": "^1.0.1"
+ "dependencies": {
+    "@assemblyscript/loader": "^0.18.32",
+    "asc": "^2.0.3"
   },
   "devDependencies": {
-    "chai": "^2.1.0",
-    "mocha": "^2.2.1"
+    "@as-pect/cli": "^6.1.1",
+    "assemblyscript": "^0.18.32",
+    "assemblyscript-json": "github:eluv-io/assemblyscript-json"
   }
 }
