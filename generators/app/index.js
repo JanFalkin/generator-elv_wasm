@@ -85,6 +85,7 @@ module.exports = class extends Generator {
     writing(){
       var copyInfo = {
         slugname: this.answers.language.slugname,
+        name: this.answers.name,
         author: this.answers.name,
         email: this.answers.email,
         license: this.answers.license,

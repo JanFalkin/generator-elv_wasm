@@ -1,6 +1,6 @@
 [package]
 
-name = "<%= slugname %>"
+name = "<%= name %>"
 version = "0.0.1"
 authors = ["<%= author %> <<%= email %>>"]
 license = "<%= license %>"
@@ -9,7 +9,7 @@ repository = "<%= repoUrl %>"
 description = "<%= description %>"
 
 [lib]
-name = "<%= slugname %>"
+name = "<%= name %>"
 crate-type = ["rlib", "cdylib"]
 
 [dependencies]

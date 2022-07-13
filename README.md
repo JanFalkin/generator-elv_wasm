@@ -78,6 +78,12 @@ Jobs is Done!
    Compiling elvwasm v0.1.0 (https://github.com/eluv-io/elv_wasm?branch=main#f7db099f)
    Compiling eluvio_rust v0.0.1 (/home/jan/newtoolchain/test-generated)
     Finished release [optimized] target(s) in 14.47s
+
+    ❯ wasm-gc ./target/wasm32-unknown-unknown/release/newname.wasm ./target/wasm32-unknown-unknown/release/newname.wasm
+
+    ❯ ls -al target/wasm32-unknown-unknown/release/newname.wasm
+            -rwxrwxr-x 2 jan jan 238849 Jul 12 19:41 target/wasm32-unknown-unknown/release/newname.wasm
+
 ```
 
 ```
@@ -122,5 +128,11 @@ Jobs is Done!
 
 > eluvio_asm@0.0.1 asbuild-lib:untouched
 > asc as/lib --use abort= -b as/lib.wasm -t as/lib.wat
+
+❯ wasm-gc ./as/lib.wasm ./as/lib.wasm
+
+❯ ls -al ./as/lib.wasm
+-rw-rw-r-- 1 jan jan 55093 Jul 12 19:50 ./as/lib.wasm
+
 
 ```
