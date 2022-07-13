@@ -57,7 +57,7 @@ module.exports = class extends Generator {
         store: true,
       },
       {
-        type: 'checkbox',
+        type: 'list',
         name: 'language',
         message: 'What source language would you like to create?',
         choices: [
@@ -68,8 +68,7 @@ module.exports = class extends Generator {
               description: 'A Rust wasm library',
               build: 'To buildthe bitcode wasm, run:\n```$ cargo build --target wasm32-unknown-unknown --release```',
               test: 'To run Cargo tests, run:\n```$ cargo test```'
-            },
-            checked: true },
+            }},
           { name: 'AssemblyScript Language',
             value: {
               name: 'AssemblyScript',
@@ -77,24 +76,24 @@ module.exports = class extends Generator {
               description: 'An AssemblyScript wasm library',
               build: 'To buildthe bitcode wasm, run:\n```$npm i```',
               test: 'To run Cargo tests, run:\n```$ npm test```'
-            },
-            checked: false },
+            }},
         ]
       }
     ]);
    }
 
     writing(){
+      this.log(this.answers);
       var copyInfo = {
-        slugname: this.answers.language[0].slugname,
+        slugname: this.answers.language.slugname,
         author: this.answers.name,
         email: this.answers.email,
         license: this.answers.license,
         repoUrl : this.answers.repoUrl,
         githubUrl : this.answers.repoUrl,
-        description: this.answers.language[0].description
+        description: this.answers.language.description
       };
-      if (this.answers.language[0].slugname == 'eluvio_rust'){
+      if (this.answers.language.slugname == 'eluvio_rust'){
         this.fs.copyTpl(
           this.templatePath('Cargo.toml'),
           this.destinationPath('Cargo.toml'),
@@ -112,7 +111,7 @@ module.exports = class extends Generator {
           copyInfo
         )
       }
-      if (this.answers.language[0].slugname == 'eluvio_asm'){
+      if (this.answers.language.slugname == 'eluvio_asm'){
         this.fs.copyTpl(
           this.templatePath('package.json'),
           this.destinationPath('package.json'),
