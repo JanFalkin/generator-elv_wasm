@@ -1,9 +1,9 @@
-# generator-elv_wasm
+# generator-elv-wasm
 project generator for an eluvio content fabric bitcode module
 
 eg for Rust
 ```
-(base) ❯ yo elv_wasm
+(base) ❯ yo elv-wasm
 
      _-----_     ╭──────────────────────────╮
     |       |    │  Create your own Eluvio  │
@@ -75,7 +75,7 @@ Jobs is Done!
    Compiling snailquote v0.3.1
    Compiling json_dotpath v1.1.0
    Compiling wapc v0.10.1
-   Compiling elvwasm v0.1.0 (https://github.com/eluv-io/elv_wasm?branch=main#f7db099f)
+   Compiling elvwasm v0.1.0 (https://github.com/eluv-io/elv-wasm?branch=main#f7db099f)
    Compiling eluvio_rust v0.0.1 (/home/jan/newtoolchain/test-generated)
     Finished release [optimized] target(s) in 14.47s
 
@@ -87,7 +87,7 @@ Jobs is Done!
 ```
 
 ```
-(base) ❯ yo elv_wasm
+(base) ❯ yo elv-wasm
 
      _-----_     ╭──────────────────────────╮
     |       |    │  Create your own Eluvio  │
